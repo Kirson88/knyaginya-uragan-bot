@@ -48,6 +48,42 @@ async def handle_message(message: types.Message):
     if message.from_user.is_bot:
         return
 
+    # Проверяем, есть ли текст в сообщении
+    user_text = message.text
+    if not user_text:
+        # Если текста нет (например, это комментарий-картинка или пустое сообщение),
+        # просто выходим, не отправляя запрос к API
+        return
+
+    try:
+        # Отправляем "печатает..." (но оборачиваем в try, чтобы не падало в каналах)
+        try:
+            await bot.send_chat_action(chat_id=message.chat.id, action="typing")
+        except Exception:
+            pass  # Если не получилось (как в комментариях канала), просто игнорируем
+
+        # Запрос к NVIDIA NIM (Nemotron)
+        response = await client.chat.completions.create(
+            model="nvidia/nemotron-3-super-120b-a12b",
+            messages=[
+                {"role": "system", "content": SYSTEM_PROMPT},
+                {"role": "user", "content": user_text}
+            ],
+            temperature=0.7,
+            max_tokens=1000
+        )
+        
+        # Отправляем ответ
+        answer = response.choices[0].message.content
+        await message.answer(answer)
+
+    except Exception as e:
+        logging.error(f"Ошибка при запросе к API: {e}")
+        await message.answer("Прошу прощения, сударь. Мои мыслительные процессы дали сбой. Попробуйте позже.")
+    # Игнорируем сообщения от ботов
+    if message.from_user.is_bot:
+        return
+
     user_text = message.text
     if not user_text:
         return

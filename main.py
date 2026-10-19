@@ -58,7 +58,7 @@ async def handle_message(message: types.Message):
     try:
         # Запрос к NVIDIA NIM (DeepSeek V4 Flash)
         response = await client.chat.completions.create(
-            model="meta/llama-3.3-70b-instruct",
+            model="nvidia/nemotron-3-super-120b-a12b",
             messages=[
                 {"role": "system", "content": SYSTEM_PROMPT},
                 {"role": "user", "content": user_text}

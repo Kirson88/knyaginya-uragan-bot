@@ -58,7 +58,7 @@ async def handle_message(message: types.Message):
     try:
         # Запрос к NVIDIA NIM (DeepSeek V4 Flash)
         response = await client.chat.completions.create(
-            model="deepseek-ai/deepseek-v4-flash",
+            model="model="deepseek-ai/deepseek-v4.1-flash",
             messages=[
                 {"role": "system", "content": SYSTEM_PROMPT},
                 {"role": "user", "content": user_text}

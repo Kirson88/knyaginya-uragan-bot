@@ -64,7 +64,7 @@ async def handle_message(message: types.Message):
 
         # Запрос к NVIDIA NIM (Nemotron)
         response = await client.chat.completions.create(
-            model="nvidia/nemotron-3.5-super-vl-120b-a12b",
+            model="nvidia/nemotron-3-ultra-550b-a55b",
             messages=[
                 {"role": "system", "content": SYSTEM_PROMPT},
                 {"role": "user", "content": user_text}

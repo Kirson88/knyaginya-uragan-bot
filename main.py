@@ -64,37 +64,7 @@ async def handle_message(message: types.Message):
 
         # Запрос к NVIDIA NIM (Nemotron)
         response = await client.chat.completions.create(
-            model="nvidia/nemotron-3-super-120b-a12b",
-            messages=[
-                {"role": "system", "content": SYSTEM_PROMPT},
-                {"role": "user", "content": user_text}
-            ],
-            temperature=0.7,
-            max_tokens=1000
-        )
-        
-        # Отправляем ответ
-        answer = response.choices[0].message.content
-        await message.answer(answer)
-
-    except Exception as e:
-        logging.error(f"Ошибка при запросе к API: {e}")
-        await message.answer("Прошу прощения, сударь. Мои мыслительные процессы дали сбой. Попробуйте позже.")
-    # Игнорируем сообщения от ботов
-    if message.from_user.is_bot:
-        return
-
-    user_text = message.text
-    if not user_text:
-        return
-
-    # Отправляем "печатает..."
-    await bot.send_chat_action(chat_id=message.chat.id, action="typing")
-
-    try:
-        # Запрос к NVIDIA NIM (DeepSeek V4 Flash)
-        response = await client.chat.completions.create(
-            model="nvidia/nemotron-3-super-120b-a12b",
+            model="nvidia/nemotron-3.5-super-vl-120b-a12b",
             messages=[
                 {"role": "system", "content": SYSTEM_PROMPT},
                 {"role": "user", "content": user_text}
